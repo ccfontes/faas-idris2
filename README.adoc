@@ -2,6 +2,8 @@
 
 An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2] using https://github.com/stefan-hoeck/idris2-pack[pack] to manage dependencies.
 
+`of-watchdog` mode used is https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork], because I couldn't find any production ready HTTP server.
+
 Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
 
 == Prerequisites ==
@@ -9,22 +11,26 @@ Hopefully, this effort will bring Idris 2 closer to being production ready on a 
 
 == Usage ==
 
+=== Pull OpenFaaS template ===
+
 To create Idris 2 Functions with this template, use the following command once:
 [source, bash]
 ----
 faas template pull https://github.com/ccfontes/openfaas-idris2-pack-template
 ----
+If you ever need to update the template, simply run the command above with the `--overwrite` flag.
 
-Then create Idris 2 Functions as in the following command example:
+=== Create an Idris 2 Function ===
+
+Create Idris 2 Functions as with the following command example:
 [source, bash]
 ----
 faas new --lang idris2-streaming my-idris2-function
 ----
-
-A new project is created. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler`.
+A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler`.
 
 == Function example ==
-See the `function-example` directory to find a fully working example for an OpenFaaS Function using Idris 2.
+See the link:function-example[function-example] directory to find a fully working example for an OpenFaaS Function using Idris 2.
 
 == TODO ==
 - Pre-compile Idris 2 Function code
@@ -73,7 +79,7 @@ docker-compose up
 
 Contributions are welcome! If you find a bug or have an idea for a new feature, please open an issue or submit a pull request.
 
-== https://github.com/ccfontes/openfaas-idris2-pack-template/LICENSE[License] ==
+== link:LICENSE[License] ==
 
 Copyright (c) 2023 Carlos da Cunha Fontes
 

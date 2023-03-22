@@ -2,7 +2,7 @@
 
 Hello world OpenFaaS Function in Idris 2.
 
-See the `idris2-hello` directory to find the Idris 2 Function code example.
+See the link:idris2-hello[idris2-hello] directory to find the Idris 2 Function code example.
 
 The following documentation explains how to run this Function in OpenFaaS.
 
@@ -42,6 +42,6 @@ Test the Function using the OpenFaaS UI or the following command:
 [source, bash]
 ----
 echo "world" | faas invoke idris2-hello
-
-Should ouput "Hello, world" string to the terminal.
 ----
+Should ouput "Hello, world" string to the terminal.
+
