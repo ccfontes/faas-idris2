@@ -1,0 +1,80 @@
+= OpenFaaS Idris 2 template using Pack =
+
+An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2] using https://github.com/stefan-hoeck/idris2-pack[pack] to manage dependencies.
+
+Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
+
+== Prerequisites ==
+* https://docs.openfaas.com/cli/install/[OpenFaaS CLI]
+
+== Usage ==
+
+To create Idris 2 Functions with this template, use the following command once:
+[source, bash]
+----
+faas template pull https://github.com/ccfontes/openfaas-idris2-pack-template
+----
+
+Then create Idris 2 Functions as in the following command example:
+[source, bash]
+----
+faas new --lang idris2-streaming my-idris2-function
+----
+
+A new project is created. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler`.
+
+== Function example ==
+See the `function-example` directory to find a fully working example for an OpenFaaS Function using Idris 2.
+
+== TODO ==
+- Pre-compile Idris 2 Function code
+- Import dependencies using `Pack` (maybe it's working as is)
+- Run Function as non-root user
+- Support multiple Idris 2 language backends
+- Add e2e tests
+- Add e2e tests in CI
+
+== Apple Silicon support ==
+I will not focus in supporting Apple Silicon Docker image. Someone might find useful the following information from the https://github.com/idris-lang/Idris2/blob/main/INSTALL.md#installing-chez-scheme-on-apple-silicon[Idris 2 documentation]:
+
+> The official version of chez scheme does not yet support Apple Silicon. So, on macOS with Apple Silicon (e.g. M1 and M2 macs), you will need to build and install the Racket fork of chez scheme.
+
+Install Chez Scheme on Apple Silicon:
+```
+git clone git@github.com:racket/ChezScheme.git
+cd ChezScheme
+git submodule init
+git submodule update
+arch=tarm64osx
+./configure --pb
+make ${arch}.bootquick
+./configure --threads
+make
+sudo make install
+```
+
+== Manual tests ==
+
+This information is for OpenFaaS template developers.
+
+Check this template's Idris build:
+[source, bash]
+----
+idris2 Index.idr --exec main
+----
+
+Check this template's docker build:
+[source, bash]
+----
+docker-compose up
+----
+
+== Contributing ==
+
+Contributions are welcome! If you find a bug or have an idea for a new feature, please open an issue or submit a pull request.
+
+== https://github.com/ccfontes/openfaas-idris2-pack-template/LICENSE[License] ==
+
+Copyright (c) 2023 Carlos da Cunha Fontes
+
+The MIT License

@@ -1,0 +1,6 @@
+version: '3.8'
+services:
+  hello_world:
+    build:
+      context: template/idris2-streaming
+    command: [/bin/echo, 'Hello world']

@@ -1,0 +1,4 @@
+language: idris2-streaming
+fprocess: idris2 ./Index.idr --exec main
+welcome_message: |
+  You have created a new function which uses Idris 2 version 0.6.0
