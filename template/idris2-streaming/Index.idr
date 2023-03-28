@@ -1,4 +1,4 @@
-module Main
+module Index
 
 import Function.Handler
 

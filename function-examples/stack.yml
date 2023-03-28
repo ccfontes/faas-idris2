@@ -1,0 +1,13 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  idris2-hello:
+    lang: idris2-streaming
+    handler: ./idris2-hello
+    image: ${DOCKER_REGISTRY_IMG_PATH}/idris2-hello
+  idris2-pack:
+    lang: idris2-streaming
+    handler: ./idris2-pack
+    image: ${DOCKER_REGISTRY_IMG_PATH}/idris2-pack

@@ -4,9 +4,8 @@ An https://github.com/openfaas[OpenFaaS] template for writing functions in https
 
 `of-watchdog` mode used is https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork], because I couldn't find any production ready HTTP server.
 
-Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
-
 == Prerequisites ==
+
 * https://docs.openfaas.com/cli/install/[OpenFaaS CLI]
 
 == Usage ==
@@ -27,20 +26,56 @@ Create Idris 2 Functions as with the following command example:
 ----
 faas new --lang idris2-streaming my-idris2-function
 ----
-A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler`.
+A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler : String -> String`.
 
-== Function example ==
-See the link:function-example[function-example] directory to find a fully working example for an OpenFaaS Function using Idris 2.
+== Function libraries ==
+
+You can add new libraries using https://github.com/stefan-hoeck/idris2-pack[Pack], which is already configured in the template. +
+Add new libraries to a `function.ipkg` file present in the root directory of your Function. Example:
+
+[source]
+----
+depends = dinwiddy
+----
+This adds https://github.com/stefan-hoeck/idris2-pack-db[Pack supported] https://github.com/Bobbbay/dinwiddy[dinwiddy] library package to the project. This way also supports adding https://idris2.readthedocs.io/en/latest/reference/packages.html[library packages shipped with Idris 2].
+
+It is also possible to add external library packages that aren't supported yet by Pack. To do this, create a file named `pack.toml` in the root directory of your Function, as such:
+
+[source]
+----
+[custom.nightly-220506.hashmap]
+type   = "github"
+url    = "https://github.com/Z-snails/idris2-hashmap"
+commit = "cb97afaa7c5d79dcb85901c6f5f87bed906fed81"
+ipkg   = "hashmap.ipkg"
+----
+
+== Function examples ==
+
+See the link:function-examples[function-examples] directory to find a fully working set of OpenFaaS Functions written in Idris 2.
 
 == TODO ==
-- Pre-compile Idris 2 Function code
-- Import dependencies using `Pack` (maybe it's working as is)
-- Run Function as non-root user
-- Support multiple Idris 2 language backends
-- Add e2e tests
-- Add e2e tests in CI
+
+* Support multiple Idris 2 language back ends:
+** https://github.com/mmhelloworld/idris-jvm[JVM]
+** https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]
+** https://github.com/madman-bob/idris2-python[Python]
+** https://github.com/Z-snails/Idris2jl[Julia]
+** https://github.com/remimimimimi/Idris2-Rust[Rust]
+* Run Function as non-root user
+
+== Production expectations ==
+
+Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
+
+A considerable amount of web stack plumbing requirements are removed by running your Idris 2 programs in serverless, but there are still the following caveats:
+
+* Writing FFI bindings for libraries from other languages that you wish to use.
+* Not a lot of code examples in stackoverflow, but we're already seeing Large Language Models like ChatGPT giving some good answers.
+* Code generated to some language may not have the performance that is sufficient for your requirements.
 
 == Apple Silicon support ==
+
 I will not focus in supporting Apple Silicon Docker image. Someone might find useful the following information from the https://github.com/idris-lang/Idris2/blob/main/INSTALL.md#installing-chez-scheme-on-apple-silicon[Idris 2 documentation]:
 
 > The official version of chez scheme does not yet support Apple Silicon. So, on macOS with Apple Silicon (e.g. M1 and M2 macs), you will need to build and install the Racket fork of chez scheme.
