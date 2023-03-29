@@ -18,7 +18,7 @@ See https://docs.openfaas.com/tutorials/first-python-function/[OpenFaaS website]
 Get the Idris 2 OpenFaaS template:
 [source, bash]
 ----
-faas template pull https://github.com/ccfontes/openfaas-idris2-pack-template
+faas template pull https://github.com/ccfontes/faas-idris2
 ----
 
 == Environment variables
