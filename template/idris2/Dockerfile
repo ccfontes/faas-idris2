@@ -31,6 +31,9 @@ RUN pack build function.ipkg
 RUN rm Index.idr
 RUN rm -rf Function
 
+## Remove after 'pack build' potential use of git
+RUN apt-get purge --yes git
+
 ## OpenFaaS ##
 
 # Function invoke time error:
