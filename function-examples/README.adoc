@@ -2,7 +2,7 @@
 
 Hello world OpenFaaS Function in Idris 2.
 
-See the link:idris2-hello[idris2-hello] and link:idris2-pack[idris2-pack] directories to find the Idris 2 Function code examples.
+See the `idris-` prefixed directories to find the Idris 2 Function code examples.
 
 The following documentation explains how to run these Functions in OpenFaaS.
 

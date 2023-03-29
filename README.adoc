@@ -1,24 +1,28 @@
 = OpenFaaS Idris 2 template =
 
-An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2].
+An https://github.com/openfaas[OpenFaaS] template for writing Functions in https://www.idris-lang.org[Idris 2].
 
 == Specs ==
 
-https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
-
 OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
 
-Idris 2 language back end is https://github.com/cisco/chezscheme[Chez Scheme]. More back ends coming soon.
+Idris 2 language back ends are https://idris2.readthedocs.io/en/latest/backends/chez.html[Chez Scheme] and https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]. More back ends coming soon.
+
+=== Package managers ===
+
+https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
+
+Yarn is used to manage Node dependencies.
 
 == Prerequisites ==
 
-* https://docs.openfaas.com/cli/install/[OpenFaaS CLI]: makes `faas` command available.
+* https://docs.openfaas.com/cli/install/[OpenFaaS CLI]: makes the `faas` command available.
 
 == Usage ==
 
 === Pull OpenFaaS template ===
 
-To create Idris 2 Functions with this template, use the following command once:
+To create Idris 2 Functions with this template, use the following command *once*:
 [source, bash]
 ----
 faas template pull https://github.com/ccfontes/faas-idris2
@@ -34,10 +38,10 @@ faas new --lang idris2 my-idris2-function
 ----
 A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler : String -> String`.
 
-== Function libraries ==
+== Function libraries [[fn-libs]] ==
 
 You can add new libraries using https://github.com/stefan-hoeck/idris2-pack[Pack], which is already configured in the template. +
-To add new libraries, edit to `function.ipkg` file present in the root directory of your Function. Example:
+To add new libraries, edit the `function.ipkg` file present in the root directory of your Function. Example:
 
 [source]
 ----
@@ -61,20 +65,45 @@ Then in `function.ipkg`, add `hashmap` library package:
 depends = dinwiddy, hashmap
 ----
 
-== Function examples ==
+== Using other code generators ==
+
+Default code generator is Chez scheme.
+
+For all code generators, library configuration is the same as in <<fn-libs>>.
+
+When choosing a code generator, only the build tools that are required for that code generator are installed into the final docker image.
+
+=== Node code generator ===
+
+Add a `package.json` file to the root directory of your Function containing whichever dependencies you need and a `pack.toml` file containing:
+[source]
+----
+[idris2]
+codegen = "node"
+----
+
+== link:function-examples[Function examples] ==
 
 See the link:function-examples[function-examples] directory to find a fully working set of OpenFaaS Functions written in Idris 2.
 
 == TODO ==
 
-* Support multiple Idris 2 language back ends: https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node], https://github.com/mmhelloworld/idris-jvm[JVM], https://github.com/madman-bob/idris2-python[Python]
+* Support other Idris 2 language back ends: https://github.com/mmhelloworld/idris-jvm[JVM], https://github.com/madman-bob/idris2-python[Python]
 * Run Function as non-root user
+* Use official idris2-pack image to provide `idris2` and `pack`
+* Create separate templates for different backends
+* add Node Function tests
 
 == Production expectations ==
 
 Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
 
-A considerable amount of web stack plumbing requirements is removed by running your Idris 2 programs in serverless, but there are still the following caveats:
+Pros:
+
+* A considerable amount of web stack plumbing requirements is removed by running your Idris 2 programs in serverless.
+* We can opt-in to use Idris 2 when it's viable, and use other language when it's not.
+
+Cons:
 
 * Writing FFI bindings for libraries from other languages that you wish to use.
 * Not a lot of code examples in stackoverflow, but we're already seeing Large Language Models like ChatGPT giving some good answers.
@@ -100,6 +129,7 @@ make
 sudo make install
 ```
 
+== Tests ==
 == Tests ==
 
 Tests run in CI with Github Actions. Some commands link:.github/workflows/faas_fn_build_invoke.yml[can be found in a Github Actions workflow] to help you with testing your changes before pushing them to a topic branch.

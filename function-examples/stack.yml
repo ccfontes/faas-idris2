@@ -11,3 +11,12 @@ functions:
     lang: idris2
     handler: ./idris2-pack
     image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-pack
+  idris2-node-hello:
+    lang: idris2
+    handler: ./idris2-node-hello
+    image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-node-hello
+  idris2-node-pack-yarn:
+    lang: idris2
+    handler: ./idris2-node-pack-yarn
+    image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-node-pack-yarn
+
