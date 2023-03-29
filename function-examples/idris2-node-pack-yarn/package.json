@@ -1,0 +1,15 @@
+{
+    "name": "faas-idris2",
+    "version": "1.0.0",
+    "description": "PoC demonstrating the use of Idris 2 interop with Node libraries",
+    "main": "index.js",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/ccfontes/faas-idris2"
+    },
+    "author": "Carlos da Cunha Fontes",
+    "license": "MIT",
+    "dependencies": {
+      "capital-case": "^1.0.4"
+    }
+  }

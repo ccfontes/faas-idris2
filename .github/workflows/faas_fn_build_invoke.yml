@@ -1,7 +1,13 @@
 name: OpenFaaS Idris 2 Function tests
 on:
+  push:
+    branches:
+      - "*"
+    paths-ignore:
+      - "*.adoc"
   pull_request:
-      - main
+    paths-ignore:
+      - "*.adoc"
 jobs:
   test:
     runs-on: ubuntu-latest

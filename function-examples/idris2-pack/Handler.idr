@@ -11,6 +11,6 @@ export
 handler : String -> String
 handler key =
   let hm = HashMap.insert "key" (Vect.index 0 value) HashMap.empty in
-  case HashMap.lookup key hm of
-    Nothing => "Key not found"
-    Just v => "Value for key: " ++ show v
+    case HashMap.lookup key hm of
+      Nothing => "Key not found"
+      Just v => "Value for key: " ++ show v
