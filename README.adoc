@@ -100,21 +100,9 @@ make
 sudo make install
 ```
 
-== Manual tests ==
+== Tests ==
 
-This information is for OpenFaaS template developers.
-
-Check this template's Idris build:
-[source, bash]
-----
-idris2 Index.idr --exec main
-----
-
-Check this template's docker build:
-[source, bash]
-----
-docker-compose up
-----
+Tests run in CI with link:.github/workflows[Github Actions]. Some commands can be found there to help you with testing your changes before pushing them to a topic branch.
 
 == Contributing ==
 
