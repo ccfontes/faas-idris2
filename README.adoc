@@ -19,7 +19,7 @@ Idris 2 language back end is https://github.com/cisco/chezscheme[Chez Scheme]. M
 To create Idris 2 Functions with this template, use the following command once:
 [source, bash]
 ----
-faas template pull https://github.com/ccfontes/faas-idris2-pack
+faas template pull https://github.com/ccfontes/faas-idris2
 ----
 If you ever need to update the template, simply run the command above with the `--overwrite` flag.
 
