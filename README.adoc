@@ -1,12 +1,16 @@
-= OpenFaaS Idris 2 template using Pack =
+= OpenFaaS Idris 2 template =
 
-An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2] using https://github.com/stefan-hoeck/idris2-pack[pack] to manage dependencies.
+An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2].
 
-`of-watchdog` mode used is https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork], because I couldn't find any production ready HTTP server.
+https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
+
+`of-watchdog` mode used is https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork], because I couldn't find an HTTP server that could work with language arbitrary back ends.
+
+Idris 2 language back end is https://github.com/cisco/chezscheme[Chez Scheme]. More back ends coming soon.
 
 == Prerequisites ==
 
-* https://docs.openfaas.com/cli/install/[OpenFaaS CLI]
+* https://docs.openfaas.com/cli/install/[OpenFaaS CLI]: makes `faas` command available.
 
 == Usage ==
 
@@ -24,14 +28,14 @@ If you ever need to update the template, simply run the command above with the `
 Create Idris 2 Functions as with the following command example:
 [source, bash]
 ----
-faas new --lang idris2-streaming my-idris2-function
+faas new --lang idris2 my-idris2-function
 ----
 A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler : String -> String`.
 
 == Function libraries ==
 
 You can add new libraries using https://github.com/stefan-hoeck/idris2-pack[Pack], which is already configured in the template. +
-Add new libraries to a `function.ipkg` file present in the root directory of your Function. Example:
+To add new libraries, edit to `function.ipkg` file present in the root directory of your Function. Example:
 
 [source]
 ----
@@ -43,11 +47,16 @@ It is also possible to add external library packages that aren't supported yet b
 
 [source]
 ----
-[custom.nightly-220506.hashmap]
+[hashmap]
 type   = "github"
 url    = "https://github.com/Z-snails/idris2-hashmap"
-commit = "cb97afaa7c5d79dcb85901c6f5f87bed906fed81"
+commit = "58f5a2d2c0a7bb082666d6ce668ee242185a52bf"
 ipkg   = "hashmap.ipkg"
+----
+Then in `function.ipkg`, add `hashmap` library package:
+[source]
+----
+depends = dinwiddy, hashmap
 ----
 
 == Function examples ==
@@ -56,27 +65,22 @@ See the link:function-examples[function-examples] directory to find a fully work
 
 == TODO ==
 
-* Support multiple Idris 2 language back ends:
-** https://github.com/mmhelloworld/idris-jvm[JVM]
-** https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]
-** https://github.com/madman-bob/idris2-python[Python]
-** https://github.com/Z-snails/Idris2jl[Julia]
-** https://github.com/remimimimimi/Idris2-Rust[Rust]
+* Support multiple Idris 2 language back ends: https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node], https://github.com/mmhelloworld/idris-jvm[JVM], https://github.com/madman-bob/idris2-python[Python]
 * Run Function as non-root user
 
 == Production expectations ==
 
 Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
 
-A considerable amount of web stack plumbing requirements are removed by running your Idris 2 programs in serverless, but there are still the following caveats:
+A considerable amount of web stack plumbing requirements is removed by running your Idris 2 programs in serverless, but there are still the following caveats:
 
 * Writing FFI bindings for libraries from other languages that you wish to use.
 * Not a lot of code examples in stackoverflow, but we're already seeing Large Language Models like ChatGPT giving some good answers.
-* Code generated to some language may not have the performance that is sufficient for your requirements.
+* Code generator to some other language may not live to your expectations.
 
 == Apple Silicon support ==
 
-I will not focus in supporting Apple Silicon Docker image. Someone might find useful the following information from the https://github.com/idris-lang/Idris2/blob/main/INSTALL.md#installing-chez-scheme-on-apple-silicon[Idris 2 documentation]:
+I will not focus on supporting Apple Silicon Docker image. Someone might find useful the following information from the https://github.com/idris-lang/Idris2/blob/main/INSTALL.md#installing-chez-scheme-on-apple-silicon[Idris 2 documentation]:
 
 > The official version of chez scheme does not yet support Apple Silicon. So, on macOS with Apple Silicon (e.g. M1 and M2 macs), you will need to build and install the Racket fork of chez scheme.
 
