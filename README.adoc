@@ -2,9 +2,11 @@
 
 An https://github.com/openfaas[OpenFaaS] template for writing functions in https://www.idris-lang.org[Idris 2].
 
+== Specs ==
+
 https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
 
-`of-watchdog` mode used is https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork], because I couldn't find an HTTP server that could work with language arbitrary back ends.
+OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
 
 Idris 2 language back end is https://github.com/cisco/chezscheme[Chez Scheme]. More back ends coming soon.
 
