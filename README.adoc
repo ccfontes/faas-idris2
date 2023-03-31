@@ -2,18 +2,6 @@
 
 An https://github.com/openfaas[OpenFaaS] template for writing Functions in https://www.idris-lang.org[Idris 2].
 
-== Specs ==
-
-OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
-
-Idris 2 language back ends are https://idris2.readthedocs.io/en/latest/backends/chez.html[Chez Scheme] and https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]. More back ends coming soon.
-
-=== Package managers ===
-
-https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
-
-Yarn is used to manage Node dependencies.
-
 == Prerequisites ==
 
 * https://docs.openfaas.com/cli/install/[OpenFaaS CLI]: makes the `faas` command available.
@@ -67,32 +55,35 @@ depends = dinwiddy, hashmap
 
 == Using other code generators ==
 
-Default code generator is Chez scheme.
+Default code generator is Chez scheme, but you may want to use other code generators, depending on your requirements.
 
-For all code generators, library configuration is the same as in <<fn-libs>>.
-
-When choosing a code generator, only the build tools that are required for that code generator are installed into the final docker image.
+For all code generators, Idris 2 library configuration is the same as in <<fn-libs>>.
 
 === Node code generator ===
 
-Add a `package.json` file to the root directory of your Function containing whichever dependencies you need and a `pack.toml` file containing:
+Add `pack.toml` to the root directory of your Function, containing:
 [source]
 ----
 [idris2]
 codegen = "node"
 ----
 
+
 == link:function-examples[Function examples] ==
 
 See the link:function-examples[function-examples] directory to find a fully working set of OpenFaaS Functions written in Idris 2.
 
-== TODO ==
+== Specs ==
 
-* Support other Idris 2 language back ends: https://github.com/mmhelloworld/idris-jvm[JVM], https://github.com/madman-bob/idris2-python[Python]
-* Run Function as non-root user
-* Use official idris2-pack image to provide `idris2` and `pack`
-* Create separate templates for different backends
-* add Node Function tests
+OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
+
+Idris 2 language back ends are https://idris2.readthedocs.io/en/latest/backends/chez.html[Chez Scheme] and https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]. More back ends coming soon.
+
+=== Package managers ===
+
+https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
+
+Yarn is used to manage Node dependencies.
 
 == Production expectations ==
 
