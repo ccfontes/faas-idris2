@@ -12,11 +12,11 @@ COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=node /opt/yarn-* /opt/yarn
 RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn
 
-# copy source files to the right places ##
+# Copy source files to the right places
 COPY Index.idr .
 RUN mkdir -p Function
 COPY function Function
-COPY function/function.ipkg function/pack.tom? function/package.jso? .
+COPY function/function.ipkg function/pack.tom? function/package.jso? ./
 
 RUN test package.json && yarn install --frozen-lockfile
 
