@@ -41,3 +41,9 @@ jobs:
           if [ "$(echo "absent-key" | docker run -i ghcr.io/ccfontes/idris2-pack:latest build/exec/index)" != "Key not found" ]; then
             exit 1
           fi
+          if [ "$(echo "world" | docker run -i ghcr.io/ccfontes/idris2-node-hello:latest build/exec/index)" != "Hello, world" ]; then
+            exit 1
+          fi
+          if [ "$(docker run -i ghcr.io/ccfontes/idris2-node-pack-yarn:latest build/exec/index)" != "["Sato", "Satoshi", "Sarariman"]" ]; then
+            exit 1
+          fi
