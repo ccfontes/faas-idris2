@@ -1,4 +1,4 @@
-name: OpenFaaS Idris 2 Function tests
+name: Tests
 on:
   push:
     branches:
