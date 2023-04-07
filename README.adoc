@@ -125,7 +125,6 @@ sudo make install
 ```
 
 == Tests ==
-== Tests ==
 
 Tests run in CI with Github Actions. Some commands link:.github/workflows/faas_fn_build_invoke.yml[can be found in a Github Actions workflow] to help you with testing your changes before pushing them to a topic branch.
 
