@@ -1,4 +1,8 @@
-= OpenFaaS Idris 2 template =
+:url-proj: https://github.com/ccfontes/faas-idris2
+:img-ci-tests-status: {url-proj}/actions/workflows/faas_fn_build_invoke.yml/badge.svg
+:url-ci-tests-status: "{url-proj}/actions"
+
+= OpenFaaS Idris 2 template image:{img-ci-tests-status}[link={url-ci-tests-status}] =
 
 An https://github.com/openfaas[OpenFaaS] template for writing Functions in https://www.idris-lang.org[Idris 2].
 
