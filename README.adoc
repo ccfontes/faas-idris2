@@ -93,12 +93,13 @@ Yarn is used to manage Node dependencies.
 
 Hopefully, this effort will bring Idris 2 closer to being production ready on a serverless scenario.
 
-Pros:
+What we get by running Idris 2 Functions in serverless:
 
 * A considerable amount of web stack plumbing requirements is removed by running your Idris 2 programs in serverless.
 * We can opt-in to use Idris 2 when it's viable, and use other language when it's not.
+* Less need for tests. When an Idris 2 program compiles, theres is a very high chance it will work as intended. This may be especially important when faced with setting up different test suites for different languages. What usually happens is for teams to choose a single language to use in their serverless project.
 
-Cons:
+Remaining issues:
 
 * Writing FFI bindings for libraries from other languages that you wish to use.
 * Not a lot of code examples in stackoverflow, but we're already seeing Large Language Models like ChatGPT giving some good answers.
