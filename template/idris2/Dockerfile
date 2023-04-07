@@ -12,13 +12,24 @@ COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 EXPOSE 8080
 HEALTHCHECK --interval=2s CMD [ -e /tmp/.lock ] || exit 1
 
-WORKDIR /root
+RUN addgroup --system app && adduser --system --ingroup app app
+
+ENV HOME="/home/app"
+WORKDIR $HOME
+
+RUN cp -r /root/.pack . && find .pack -type l -exec sh -c 'ln -sfn $(readlink "{}" | sed "s|/root/|$HOME/|") "{}"' \;
+RUN chown app:app -R /home/app/.pack
+
+USER app
+ENV PATH "$HOME/.pack/bin:$PATH"
+
 COPY Index.idr .
 RUN mkdir -p Function
 COPY function Function
-COPY function/function.ipkg function/pack.tom? function/package.jso? ./
+COPY function/function.ipkg function/pack.tom? function/package.jso? function/yarn.loc? ./
 
-RUN yarn install --frozen-lockfile
+RUN if [ -f package.json ]; then yarn install --frozen-lockfile; fi
+
 RUN pack build function.ipkg
 # +x for Node Functions
 RUN chmod +x build/exec/index
