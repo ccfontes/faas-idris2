@@ -30,9 +30,50 @@ faas new --lang idris2 my-idris2-function
 ----
 A new project is created for a function defined as `my-idris2-function`. It will contain a `Function.Handler` namespace that is required for the template to work properly. The requirement for this namespace is to have a top-level function defined as `handler : String -> String`.
 
-== Function libraries [[fn-libs]] ==
+== Using other code generators ==
 
-You can add new libraries using https://github.com/stefan-hoeck/idris2-pack[Pack], which is already configured in the template. +
+Default code generator is Chez scheme, but you may want to use other code generators, depending on your requirements.
+
+For all code generators, Idris 2 library configuration is the same as in <<fn-libs>>.
+
+Add `<codegen>` to your `<function-name>.yml` or `stack.yml` as in the following example:
+```docker
+  idris2-racket-hello:
+    lang: idris2
+    handler: ./idris2-racket-hello
+    image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-racket-hello
+    build_args:
+      CODEGEN: <codegen>
+```
+and to `pack.toml` to the root directory of your Function, containing:
+[source]
+----
+[idris2]
+codegen = <language>
+----
+where `<codegen>` is one of `"chez"`, `"node"` or `"racket"`. `"chez"` is the default.
+
+== Specs ==
+
+[%header,format=csv]
+|===
+Language, Package manager, Dependency file, Back end
+Idris 2, https://github.com/stefan-hoeck/idris2-pack[pack], config.ipkg, N/A
+
+Chez, TODO, TODO, https://idris2.readthedocs.io/en/latest/backends/chez.html[chez] (default)
+
+Racket, https://docs.racket-lang.org/raco/[raco], info.rkt, https://idris2.readthedocs.io/en/latest/backends/racket.html[racket]
+
+Node, https://yarnpkg.com/[yarn], package.json, https://idris2.readthedocs.io/en/latest/backends/javascript.html[node]
+|===
+
+A **Package manager** will read a **Dependency file** that you provide, using conventions in the table above.
+
+OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
+
+== Pack libraries [[fn-libs]] ==
+
+You can add new Idris 2 libraries using https://github.com/stefan-hoeck/idris2-pack[Pack], which is already configured in the template. +
 To add new libraries, edit the `function.ipkg` file present in the root directory of your Function. Example:
 
 [source]
@@ -57,37 +98,9 @@ Then in `function.ipkg`, add `hashmap` library package:
 depends = dinwiddy, hashmap
 ----
 
-== Using other code generators ==
-
-Default code generator is Chez scheme, but you may want to use other code generators, depending on your requirements.
-
-For all code generators, Idris 2 library configuration is the same as in <<fn-libs>>.
-
-=== Node code generator ===
-
-Add `pack.toml` to the root directory of your Function, containing:
-[source]
-----
-[idris2]
-codegen = "node"
-----
-
-
 == link:function-examples[Function examples] ==
 
 See the link:function-examples[function-examples] directory to find a fully working set of OpenFaaS Functions written in Idris 2.
-
-== Specs ==
-
-OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
-
-Idris 2 language back ends are https://idris2.readthedocs.io/en/latest/backends/chez.html[Chez Scheme] and https://idris2.readthedocs.io/en/latest/backends/javascript.html[Node]. More back ends coming soon.
-
-=== Package managers ===
-
-https://github.com/stefan-hoeck/idris2-pack[Pack] is used to manage Idris 2 dependencies.
-
-Yarn is used to manage Node dependencies.
 
 == Production expectations ==
 
@@ -97,13 +110,13 @@ What we get by running Idris 2 Functions in serverless:
 
 * A considerable amount of web stack plumbing requirements is removed by running your Idris 2 programs in serverless.
 * We can opt-in to use Idris 2 when it's viable, and use other language when it's not.
-* Less need for tests. When an Idris 2 program compiles, theres is a very high chance it will work as intended. This may be especially important when faced with setting up different test suites for different languages. What usually happens is for teams to choose a single language to use in their serverless project.
+* Less need for tests. When an Idris 2 program compiles, there is a very high chance it will work as intended. This may be especially important when faced with setting up different test suites for different languages. What usually happens is for teams to choose a single language to use in their serverless project.
 
 Remaining issues:
 
 * Writing FFI bindings for libraries from other languages that you wish to use.
-* Not a lot of code examples in stackoverflow, but we're already seeing Large Language Models like ChatGPT giving some good answers.
-* Code generator to some other language may not live to your expectations.
+* Not a lot of code examples in stackoverflow, but sometimes ChatGPT can help.
+* Code generator may not live to your expectations.
 
 == Apple Silicon support ==
 
