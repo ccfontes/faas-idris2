@@ -15,8 +15,17 @@ functions:
     lang: idris2
     handler: ./idris2-node-hello
     image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-node-hello
+    build_args:
+      CODEGEN: node
   idris2-node-pack-yarn:
     lang: idris2
     handler: ./idris2-node-pack-yarn
     image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-node-pack-yarn
-
+    build_args:
+      CODEGEN: node
+  idris2-racket-hello:
+    lang: idris2
+    handler: ./idris2-racket-hello
+    image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-racket-hello
+    build_args:
+      CODEGEN: racket
