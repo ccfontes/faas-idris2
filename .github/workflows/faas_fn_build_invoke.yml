@@ -18,36 +18,34 @@ jobs:
         run: |
           mkdir test
           cd test
-          faas template pull https://github.com/ccfontes/faas-idris2#${{ github.head_ref || github.ref_name }} 
-          faas new --lang idris2 my-idris2-function --prefix ghcr.io/ccfontes
+          faas template pull https://github.com/${{ github.actor }}/faas-idris2#${{ github.head_ref || github.ref_name }} 
+          faas new --lang idris2 my-idris2-function --prefix ghcr.io/${{ github.actor }}
           faas build -f my-idris2-function.yml
-          if [ "$(echo "Hello world" | docker run -i ghcr.io/ccfontes/my-idris2-function:latest build/exec/index)" != "Hello world" ]; then
+          if [ "$(echo "Hello world" | docker run -i ghcr.io/${{ github.actor }}/my-idris2-function:latest build/exec/index)" != "Hello world" ]; then
             exit 1
           fi
       - name: Build provided Function examples and invoke them
-        env:
-          DOCKER_REGISTRY_IMG_ORG_PATH: ghcr.io/ccfontes
         run: |
-          git clone https://github.com/ccfontes/faas-idris2.git
+          git clone https://github.com/${{ github.actor }}/faas-idris2.git
           cd faas-idris2/function-examples
           git checkout ${{ github.head_ref || github.ref_name }}
-          faas template pull https://github.com/ccfontes/faas-idris2#${{ github.head_ref || github.ref_name }}
+          faas template pull https://github.com/${{ github.actor }}/faas-idris2#${{ github.head_ref || github.ref_name }}
           faas build
-          if [ "$(echo "world" | docker run -i ghcr.io/ccfontes/idris2-hello:latest build/exec/index)" != "Hello, world" ]; then
+          if [ "$(echo "world" | docker run -i ghcr.io/${{ github.actor }}/idris2-hello:latest build/exec/index)" != "Hello, world" ]; then
               exit 1
           fi
-          if [ "$(echo "key" | docker run -i ghcr.io/ccfontes/idris2-pack:latest build/exec/index)" != "Value for key: [1, 2, 3]" ]; then
+          if [ "$(echo "key" | docker run -i ghcr.io/${{ github.actor }}/idris2-pack:latest build/exec/index)" != "Value for key: [1, 2, 3]" ]; then
             exit 2
           fi
-          if [ "$(echo "absent-key" | docker run -i ghcr.io/ccfontes/idris2-pack:latest build/exec/index)" != "Key not found" ]; then
+          if [ "$(echo "absent-key" | docker run -i ghcr.io/${{ github.actor }}/idris2-pack:latest build/exec/index)" != "Key not found" ]; then
             exit 3
           fi
-          if [ "$(echo "world" | docker run -i ghcr.io/ccfontes/idris2-node-hello:latest build/exec/index)" != "Hello, world" ]; then
+          if [ "$(echo "world" | docker run -i ghcr.io/${{ github.actor }}/idris2-node-hello:latest build/exec/index)" != "Hello, world" ]; then
             exit 4
           fi
-          if [ "$(docker run -i ghcr.io/ccfontes/idris2-node-pack-yarn:latest build/exec/index)" != "[\"Sato\", \"Satoshi\", \"Sarariman\"]" ]; then
+          if [ "$(docker run -i ghcr.io/${{ github.actor }}/idris2-node-pack-yarn:latest build/exec/index)" != "[\"Sato\", \"Satoshi\", \"Sarariman\"]" ]; then
             exit 5
           fi
-          if [ "$(echo "world" | docker run -i ghcr.io/ccfontes/idris2-racket-hello:latest build/exec/index)" != "Hello, world" ]; then
+          if [ "$(echo "world" | docker run -i ghcr.io/${{ github.actor }}/idris2-racket-hello:latest build/exec/index)" != "Hello, world" ]; then
             exit 6
           fi
