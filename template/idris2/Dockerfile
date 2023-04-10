@@ -40,8 +40,6 @@ COPY function Function
 COPY function/function.ipkg function/pack.tom? function/package.jso? function/yarn.loc? ./
 
 RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile; fi
-RUN if [ -f "info.rkt" ]; then raco pkg install --auto; fi
-RUN echo ${CODEGEN}
 RUN pack --cg ${CODEGEN} build function.ipkg
 # +x for node Functions
 RUN chmod +x build/exec/index
