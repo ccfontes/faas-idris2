@@ -55,20 +55,16 @@ Default code generator is Chez scheme, but you may want to use other code genera
 For all code generators, Idris 2 library configuration is the same as in <<fn-libs>>.
 
 Add `<codegen>` to your `<function-name>.yml` or `stack.yml` as in the following example:
-```docker
+[source]
+----
   idris2-racket-hello:
     lang: idris2
     handler: ./idris2-racket-hello
     image: ${DOCKER_REGISTRY_IMG_ORG_PATH}/idris2-racket-hello
     build_args:
       CODEGEN: <codegen>
-```
-and to `pack.toml` to the root directory of your Function, containing:
-[source]
 ----
-[idris2]
-codegen = <language>
-----
+The `codegen` options can be found in table under <<Specs>>.
 
 == Pack libraries [[fn-libs]] ==
 

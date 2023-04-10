@@ -27,7 +27,7 @@ faas template pull https://github.com/ccfontes/faas-idris2
 ----
 export DOCKER_REGISTRY_IMG_ORG_PATH=<registry org path>
 ----
-Check link:function-examples/stack.yml[function-examples/stack.yml] to find out how `DOCKER_REGISTRY_IMG_ORG_PATH` is used.
+Check link:stack.yml[stack.yml] to find out how `DOCKER_REGISTRY_IMG_ORG_PATH` is used.
 
 == Building and deploying your function ==
 
