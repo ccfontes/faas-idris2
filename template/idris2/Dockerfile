@@ -15,6 +15,8 @@ ONBUILD RUN apt-get update && apt-get install --yes racket && apt-get clean && r
 
 FROM idris2-${CODEGEN}
 
+ARG CODEGEN
+
 RUN set -e
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
@@ -39,7 +41,8 @@ COPY function/function.ipkg function/pack.tom? function/package.jso? function/ya
 
 RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile; fi
 RUN if [ -f "info.rkt" ]; then raco pkg install --auto; fi
-RUN pack build function.ipkg
+RUN echo ${CODEGEN}
+RUN pack --cg ${CODEGEN} build function.ipkg
 # +x for node Functions
 RUN chmod +x build/exec/index
 
