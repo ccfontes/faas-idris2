@@ -49,7 +49,7 @@ A **Package manager** will read **dependency files** that you provide, using con
 
 OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find a working HTTP server fully written in Idris 2, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
 
-Function's docker builds only install the tools required for configured `codegen` build. The final docker image is Alpine based and includes only `watchdog`, and the executable for `fprocess`.
+Function's docker builds only install the tools required for configured `codegen` build.
 
 == Using other code generators ==
 

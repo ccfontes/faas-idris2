@@ -32,15 +32,13 @@ RUN pack --cg ${CODEGEN} build function.ipkg
 # +x for node Functions
 RUN chmod +x build/exec/index
 
-FROM alpine:3.17.3
+FROM builder
 
-ARG CODEGEN
-
-RUN addgroup -S app && adduser -S -G app app
+RUN addgroup --system app && adduser --system --ingroup app app
 ENV HOME="/home/app"
 
 COPY --from=builder /root/build $HOME/build
-RUN chown -R app:app $HOME/build
+RUN chown -R app:app $HOME
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 
