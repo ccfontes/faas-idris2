@@ -26,7 +26,7 @@ jobs:
           fi
       - name: Build provided Function examples and invoke them
         env:
-          DOCKER_REGISTRY_IMG_ORG_PATH: ghcr.io/ccfontes
+          DOCKER_REGISTRY_IMG_ORG_PATH: ghcr.io/${{ github.repository_owner }}
         run: |
           git clone https://github.com/${{ github.repository_owner }}/faas-idris2.git
           cd faas-idris2/function-examples
