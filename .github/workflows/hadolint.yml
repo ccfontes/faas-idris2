@@ -1,0 +1,19 @@
+name: Hadolint
+on:
+  push:
+    branches:
+      - "*"
+    paths-ignore:
+      - "*.adoc"
+  pull_request:
+    paths-ignore:
+      - "*.adoc"
+
+jobs:
+  hadolint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: template/idris2/Dockerfile
