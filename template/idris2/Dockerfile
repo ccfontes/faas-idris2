@@ -1,7 +1,6 @@
 ARG CODEGEN="chez"
 
 FROM node:18-bullseye-slim AS node
-FROM racket/racket:8.8 AS racket
 FROM ghcr.io/openfaas/of-watchdog:0.9.11 AS watchdog
 FROM ghcr.io/stefan-hoeck/idris2-pack:nightly-230330 AS idris2-chez
 
@@ -13,26 +12,15 @@ ONBUILD RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn
 FROM idris2-chez AS idris2-racket
 ONBUILD RUN apt-get update && apt-get install --yes racket && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-FROM idris2-${CODEGEN}
+FROM idris2-${CODEGEN} AS builder
 
 ARG CODEGEN
 
 RUN set -e
 
-COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
-EXPOSE 8080
-HEALTHCHECK --interval=2s CMD [ -e /tmp/.lock ] || exit 1
+ENV PATH "/root/.pack/bin:$PATH"
 
-RUN addgroup --system app && adduser --system --ingroup app app
-
-ENV HOME="/home/app"
-
-RUN mv /root/.pack $HOME && find $HOME/.pack -type l -exec sh -c 'ln -sfn $(readlink "{}" | sed "s|/root/|$HOME/|") "{}"' \;
-RUN chown app:app -R $HOME/.pack
-
-USER app
-ENV PATH "$HOME/.pack/bin:$PATH"
-WORKDIR $HOME
+WORKDIR /root
 
 COPY Index.idr .
 RUN mkdir -p Function
@@ -43,5 +31,23 @@ RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile; fi
 RUN pack --cg ${CODEGEN} build function.ipkg
 # +x for node Functions
 RUN chmod +x build/exec/index
+
+FROM alpine:3.17.3
+
+ARG CODEGEN
+
+RUN addgroup -S app && adduser -S -G app app
+ENV HOME="/home/app"
+
+COPY --from=builder /root/build $HOME/build
+RUN chown -R app:app $HOME/build
+
+COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
+
+USER app
+WORKDIR $HOME
+
+EXPOSE 8080
+HEALTHCHECK --interval=2s CMD [ -e /tmp/.lock ] || exit 1
 
 CMD ["fwatchdog"]
