@@ -34,19 +34,21 @@ A new project is created for a function defined as `my-idris2-function`. It will
 
 [%header,format=csv]
 |===
-Language, Package manager, Dependency file, Codegen
+Language, Package manager, Dependency files, Codegen
 Idris 2, https://github.com/stefan-hoeck/idris2-pack[pack], config.ipkg, N/A
 
-Chez, TODO, TODO, https://idris2.readthedocs.io/en/latest/backends/chez.html[chez] (default)
+Chez, https://akkuscm.org/[akku], "Akku.manifest, Akku.lock", https://idris2.readthedocs.io/en/latest/backends/chez.html[chez] (default)
 
 Racket, TODO, TODO, https://idris2.readthedocs.io/en/latest/backends/racket.html[racket]
 
-Node, https://yarnpkg.com/[yarn], package.json, https://idris2.readthedocs.io/en/latest/backends/javascript.html[node]
+Node, https://yarnpkg.com/[yarn], "package.json, yarn.lock", https://idris2.readthedocs.io/en/latest/backends/javascript.html[node]
 |===
 
-A **Package manager** will read a **Dependency file** that you provide, using conventions in the table above.
+A **Package manager** will read **dependency files** that you provide, using conventions in the table above.
 
-OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find an HTTP server for Idris 2, supporting arbitrary language back ends, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
+OpenFaaS watchdog is `of-watchdog` in https://github.com/openfaas/of-watchdog#3-streaming-fork-modestreaming---default[Streaming fork] mode. I couldn't find a working HTTP server fully written in Idris 2, so that we could use recommended `of-watchdog` https://github.com/openfaas/of-watchdog#1-http-modehttp[HTTP] mode.
+
+Function builds only install the tools required for configured `codegen`.
 
 == Using other code generators ==
 
