@@ -2,9 +2,8 @@
 :img-ci-tests-status: {url-proj}/actions/workflows/faas_fn_build_invoke.yml/badge.svg
 :url-ci-tests-status: "{url-proj}/actions"
 :img-license: https://img.shields.io/badge/license-MIT-black.svg
-:url-license: {url-proj}/LICENSE
 
-= OpenFaaS Idris 2 template image:{img-ci-tests-status}[link={url-ci-tests-status}] image:{img-license}[link={url-license}] =
+= OpenFaaS Idris 2 template image:{img-ci-tests-status}[link={url-ci-tests-status}] image:{img-license}[link=LICENSE] =
 
 An https://github.com/openfaas[OpenFaaS] template for writing Functions in https://www.idris-lang.org[Idris 2].
 
