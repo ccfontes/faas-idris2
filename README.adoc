@@ -39,7 +39,7 @@ Idris 2, https://github.com/stefan-hoeck/idris2-pack[pack], config.ipkg, N/A
 
 Chez, TODO, TODO, https://idris2.readthedocs.io/en/latest/backends/chez.html[chez] (default)
 
-Racket, https://docs.racket-lang.org/raco/[raco], info.rkt, https://idris2.readthedocs.io/en/latest/backends/racket.html[racket]
+Racket, TODO, TODO, https://idris2.readthedocs.io/en/latest/backends/racket.html[racket]
 
 Node, https://yarnpkg.com/[yarn], package.json, https://idris2.readthedocs.io/en/latest/backends/javascript.html[node]
 |===
