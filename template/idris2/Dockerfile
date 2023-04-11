@@ -11,7 +11,7 @@ ONBUILD COPY --from=node /opt/yarn-* /opt/yarn
 ONBUILD RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn
 
 FROM idris2-chez AS idris2-racket
-ONBUILD RUN apt-get update && apt-get install --yes racket && apt-get clean && rm -rf /var/lib/apt/lists/*
+ONBUILD RUN apt-get update && apt-get install --yes --no-install-recommends racket=8.2+dfsg1-2ubuntu1 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 FROM idris2-${CODEGEN}
 
@@ -27,8 +27,9 @@ RUN addgroup --system app && adduser --system --ingroup app app
 
 ENV HOME="/home/app"
 
-RUN mv /root/.pack $HOME && find $HOME/.pack -type l -exec sh -c 'ln -sfn $(readlink "{}" | sed "s|/root/|$HOME/|") "{}"' \;
-RUN chown app:app -R $HOME/.pack
+RUN mv /root/.pack $HOME && \
+    find $HOME/.pack -type l -exec sh -c 'for link; do target=$(readlink "$link"); new_target=$(echo "$target" | sed "s|/root/|$HOME/|"); ln -sfn "$new_target" "$link"; done' _ {} + && \
+    chown app:app -R $HOME/.pack
 
 USER app
 ENV PATH "$HOME/.pack/bin:$PATH"
@@ -39,9 +40,10 @@ RUN mkdir -p Function
 COPY function Function
 COPY function/function.ipkg function/pack.tom? function/package.jso? function/yarn.loc? ./
 
-RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile; fi
-RUN pack --cg ${CODEGEN} build function.ipkg
-# +x for node Functions
-RUN chmod +x build/exec/index
+# hadolint ignore=DL3006
+RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile && yarn cache clean; fi && \
+    pack --cg ${CODEGEN} build function.ipkg && \
+    # +x for node Functions
+    RUN chmod +x build/exec/index
 
 CMD ["fwatchdog"]
