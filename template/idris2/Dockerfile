@@ -10,10 +10,10 @@ ONBUILD COPY --from=node /usr/local/bin/node /usr/local/bin/node
 ONBUILD COPY --from=node /opt/yarn-* /opt/yarn
 ONBUILD RUN ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn
 
-# hadolint ignore=DL3006
 FROM idris2-chez AS idris2-racket
 ONBUILD RUN apt-get update && apt-get install --yes --no-install-recommends racket=8.2+dfsg1-2ubuntu1 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# hadolint ignore=DL3006
 FROM idris2-${CODEGEN}
 
 ARG CODEGEN
