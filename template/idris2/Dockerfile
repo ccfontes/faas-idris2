@@ -44,6 +44,6 @@ COPY function/function.ipkg function/pack.tom? function/package.jso? function/ya
 RUN if [ -f "package.json" ]; then yarn install --frozen-lockfile && yarn cache clean; fi && \
     pack --cg ${CODEGEN} build function.ipkg && \
     # +x for node Functions
-    RUN chmod +x build/exec/index
+    chmod +x build/exec/index
 
 CMD ["fwatchdog"]
