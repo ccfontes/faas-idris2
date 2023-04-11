@@ -23,11 +23,10 @@ COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 EXPOSE 8080
 HEALTHCHECK --interval=2s CMD [ -e /tmp/.lock ] || exit 1
 
-RUN addgroup --system app && adduser --system --ingroup app app
+ENV HOME="/home/app" 
 
-ENV HOME="/home/app"
-
-RUN mv /root/.pack $HOME && \
+RUN addgroup --system app && adduser --system --ingroup app app && \
+    mv /root/.pack $HOME && \
     find $HOME/.pack -type l -exec sh -c 'for link; do target=$(readlink "$link"); new_target=$(echo "$target" | sed "s|/root/|$HOME/|"); ln -sfn "$new_target" "$link"; done' _ {} + && \
     chown app:app -R $HOME/.pack
 
